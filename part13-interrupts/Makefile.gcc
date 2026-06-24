@@ -2,7 +2,7 @@ CFILES = $(wildcard *.c lib/*.c kernel/*.c)
 SFILES = $(wildcard boot/*.S lib/*.S kernel/*.S)
 OFILES = $(CFILES:.c=.o) $(SFILES:.S=.o)
 GCCFLAGS = -Wall -O2 -ffreestanding -nostdinc -nostdlib -nostartfiles -mstrict-align
-GCCPATH = ../../arm-gnu-toolchain-13.2.Rel1-darwin-arm64-aarch64-none-elf/bin
+GCCPATH = ../../arm-gnu-toolchain-15.2.rel1-darwin-arm64-aarch64-none-elf/bin
 
 all: clean kernel8.img
 

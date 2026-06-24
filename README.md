@@ -57,7 +57,7 @@ The RPi4 runs on an Arm Cortex-A72 processor. Your dev machine is likely running
 Using Arm's compiler for Linux
 ------------------------------
 
-Download and unpack [Arm's gcc compiler](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-a/downloads). For reasons that I won't go into here, you'll need to use the "AArch64 ELF bare-metal target". Since I'm using WSL on Windows 10 to emulate Ubuntu, I downloaded the x86_64 Linux hosted cross-compiler.
+Download and unpack [Arm's gcc compiler](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads). For reasons that I won't go into here, you'll need to use the "AArch64 ELF bare-metal target". Since I'm using WSL on Windows 10 to emulate Ubuntu, I downloaded the x86_64 Linux hosted cross-compiler.
 
 I also advocate installing GNU make - you'll need it soon enough. Because I'm using WSL, for me that was simply a matter of typing `sudo apt install make` and entering my password.
 

@@ -150,7 +150,7 @@ I hope writing your first game was easier than you thought it might be - and on 
 
 _Well done, you've just written your first game!_
 
-PS: if you have issues using the Arm gcc compiler (namely an unexpected crash after painting the first brick), you might to try setting the compiler optimisation level to `-O1` instead of `-O2` in the _Makefile_. Some folks have [reported issues](https://github.com/babbleberry/rpi4-osdev/issues/17), and I am able to reproduce these.
+PS: if you have issues using the Arm gcc compiler (namely an unexpected crash after painting the first brick), you might to try setting the compiler optimisation level to `-O1` instead of `-O2` in the _Makefile_. Some folks have [reported issues](https://github.com/sypstraw/rpi4-osdev/issues/17), and I am able to reproduce these.
 
 ![The finished game](images/6-breakout-thefinishedgame.jpg)
 

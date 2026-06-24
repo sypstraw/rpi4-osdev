@@ -15,7 +15,7 @@ Perhaps the easiest route is to firstly re-image your Pi to use the 64-bit Raspb
 
 You'll then need to download a cross-compiler from the Arm website.
 
-What you're looking for is the current [AArch64 ELF bare-metal target (aarch64-none-elf)](https://developer.arm.com/-/media/Files/downloads/gnu-a/10.2-2020.11/binrel/gcc-arm-10.2-2020.11-aarch64-aarch64-none-elf.tar.xz). If this link is somehow broken, you can use Google to search for "Arm GNU-A linux hosted cross compilers".
+What you're looking for is the current [AArch64 ELF bare-metal target (aarch64-none-elf)](https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-aarch64-aarch64-none-elf.tar.xz). If this link is somehow broken, you can use Google to search for "Arm GNU-A linux hosted cross compilers".
 
 Then unpack the archive using `tar -xf <filename>`. You'll end up with a _gcc_ directory (albeit with a slightly longer name), which itself contains a _bin_ subdirectory, wherein you'll find the _gcc_ executable (again - with a longer name!). Remember this path.
 
@@ -23,7 +23,7 @@ Note: you can avoid re-imaging the Pi, by instead [building a cross-compiler you
 
 Now let's build something:
 
- * Use `git` to clone this repo: `git clone https://github.com/babbleberry/rpi4-osdev.git`
+ * Use `git` to clone this repo: `git clone https://github.com/sypstraw/rpi4-osdev.git`
  * Decide which part you want to build - I like testing with _part5-framebuffer_ (it's visual, so you'll know when it works!)
  * Copy the _Makefile.gcc_ to _Makefile_
  * Edit the _Makefile_ and ensure the `GCCPATH` variable points to the _bin_ subdirectory where your cross-compiler is to be found

@@ -86,7 +86,7 @@ We then serve responses based on three possible cases:
 
  * The incoming request is not a GET request (eg. maybe it's a HEAD request) - you can simulate this using the `curl` tool: `curl -I 192.168.0.66`
  * The incoming request is a GET request for the root web page `/` - `curl 192.168.0.66/`
- * The incoming request is a GET request for any non-root web page - eg. `curl 192.168.0.66/babbleberry/monkey`
+ * The incoming request is a GET request for any non-root web page - eg. `curl 192.168.0.66/sypstraw/monkey`
 
 I recommend reading [this page](http://tuxgraphics.org/electronics/200905/embedded-tcp-ip-stack.shtml) for a full explanation. The code I have ported is very similar to what you see there.
 
