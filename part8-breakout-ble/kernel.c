@@ -321,7 +321,7 @@ void acl_poll()
 	  unsigned int dlen = d1 | (d2 << 8);
 	  unsigned char data[dlen];
 
-	  if (dlen > 7) {
+	  if (dlen) {
 	     for (int i=0;i<dlen;i++) data[i] = bt_readByte();
 
 	     unsigned int length = data[0] | (data[1] << 8);
@@ -329,7 +329,7 @@ void acl_poll()
 	     unsigned char opcode = data[4];
 
 	     if (thandle == connection_handle && length == 4 && opcode == 0x1b) {
-	        if (channel == 4 && data[5] == 0x2a && data[6] == 0x00) {
+	        if (channel == 4 && data[5] == 0x1b && data[6] == 0x00) {
 	      	   dir = data[7];
                    moveObjectAbs(paddle, MARGIN + (dir * ((VIRTWIDTH - paddlewidth + MARGIN)/100)), paddle->y);
                 }

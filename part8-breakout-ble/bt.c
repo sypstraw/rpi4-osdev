@@ -220,7 +220,7 @@ void sendACLsubscribe(unsigned int handle)
     bt_writeByte(lo(channel));
     bt_writeByte(hi(channel));
 
-    volatile unsigned char command[5] = { 0x12, 0x2b, 0x00, 0x01, 0x00 };
+    volatile unsigned char command[5] = { 0x12, 0x1d, 0x00, 0x01, 0x00 };
 
     unsigned int c=0;
     while (c++<data_length) bt_writeByte(command[c-1]);

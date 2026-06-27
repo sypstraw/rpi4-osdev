@@ -15,30 +15,24 @@ class EchoCharacteristic extends BlenoCharacteristic {
     this._updateValueCallback = null;
 
     // Allocate tracking buffers internally
-    this.buf = Buffer.allocUnsafe(4);
-    this.obuf = Buffer.allocUnsafe(4);
-    this.buttbuf = Buffer.allocUnsafe(2);
+    this.buf = Buffer.allocUnsafe(1);
+    this.obuf = Buffer.allocUnsafe(1);
 
     // Screen layout matching properties
     this.scrwidth = 1440;
-    this.scrheight = 900;
-    this.divisorx = this.scrwidth / 320;
-    this.divisory = this.scrheight / 200;
+    this.divisor = this.scrwidth / 100;
 
     // Start listening for mouse events natively inside the class
     this._setupMouseHooks();
   }
 
   _setupMouseHooks() {
-    // 1. Mouse Movement
     uIOhook.on('mousemove', event => {
-       this.buf.writeUInt16LE(Math.round(event.x / this.divisorx), 0);
-       this.buf.writeUInt16LE(Math.round(event.y / this.divisory), 2);
+       this.buf.writeUInt8(Math.round(event.x / this.divisor), 0);
 
        if (Buffer.compare(this.buf, this.obuf)) {
           this._value = this.buf;
           
-          // CRITICAL: This is what actually transmits data over the air!
           if (this._updateValueCallback) {
              this._updateValueCallback(this._value);
           }
@@ -46,29 +40,6 @@ class EchoCharacteristic extends BlenoCharacteristic {
        }
     });
 
-    // 2. Mouse Down
-    uIOhook.on('mousedown', event => {
-       this.buttbuf.writeUInt8(1, 0);
-       this.buttbuf.writeUInt8(event.button, 1);
-
-       this._value = this.buttbuf;
-       if (this._updateValueCallback) {
-          this._updateValueCallback(this._value);
-       }
-    });
-
-    // 3. Mouse Up
-    uIOhook.on('mouseup', event => {
-       this.buttbuf.writeUInt8(2, 0);
-       this.buttbuf.writeUInt8(event.button, 1);
-
-       this._value = this.buttbuf;
-       if (this._updateValueCallback) {
-          this._updateValueCallback(this._value);
-       }
-    });
-
-    // Fire up the hardware listener hook
     uIOhook.start();
   }
 
