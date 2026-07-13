@@ -256,8 +256,8 @@ void run_search(void) {
     debugstr("Connected!");
     debugcrlf();
 
-    // Get the characteristic value
-    debugstr("Sending read request: ");
+    // Create a subscription
+    debugstr("Sending subscription request: ");
     debughex(connection_handle); debugcrlf();
     sendACLsubscribe(connection_handle);
 
