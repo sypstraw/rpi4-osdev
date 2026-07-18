@@ -1,8 +1,7 @@
-> [!WARNING]
-> _Saturday 18th July 2026_: Parts 12-15 still require updating to reflect the latest RPi4 firmware changes. Parts 1-11 are, however, updated and confirmed working (at least when built on an Apple MacBook Pro M1 running MacOS Tahoe 26.5.2, Clang 21.0.0, Node v24.13.1).
-
 Writing a "bare metal" operating system for Raspberry Pi 4
 ==========================================================
+> [!WARNING]
+> _Saturday 18th July 2026_: Parts 12-15 still require updating to reflect the latest RPi4 firmware changes. Parts 1-11 are, however, updated and confirmed working (at least when built on an Apple MacBook Pro M1 running MacOS Tahoe 26.5.2, Clang 21.0.0, Node v24.13.1).
 
 Introduction
 ------------
