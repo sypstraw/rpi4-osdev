@@ -6,6 +6,7 @@ void bt_getbdaddr(unsigned char *bdaddr);
 void bt_init();
 unsigned int bt_isReadByteReady();
 unsigned char bt_readByte();
+void bt_writeByte(char byte);
 unsigned char bt_waitReadByte();
 void setLEeventmask(unsigned char mask);
 void startActiveScanning();

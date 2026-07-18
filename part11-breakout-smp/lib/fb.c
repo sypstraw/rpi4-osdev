@@ -193,7 +193,7 @@ void moveRectAbs(int oldx, int oldy, int width, int height, int newx, int newy, 
        xcount++;
     }
     // Wipe it out with background colour
-    drawRect(oldx, oldy, oldx + width, oldy + width, attr, 1);
+    drawRect(oldx, oldy, oldx + width, oldy + height, attr, 1);
     // Draw it again
     for (int i=newx;i<newx + width;i++) {
         for (int j=newy;j<newy + height;j++) {

@@ -192,7 +192,7 @@ void moveRect(int oldx, int oldy, int width, int height, int shiftx, int shifty,
        xcount++;
     }
     // Wipe it out with background colour
-    drawRect(oldx, oldy, oldx + width, oldy + width, attr, 1);
+    drawRect(oldx, oldy, oldx + width, oldy + height, attr, 1);
     // Draw it again
     for (int i=newx;i<newx + width;i++) {
         for (int j=newy;j<newy + height;j++) {
