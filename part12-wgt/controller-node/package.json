@@ -1,0 +1,12 @@
+{
+  "name": "ble",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "main.js",
+  "dependencies": {
+    "bleno": "github:notjosh/bleno#inject-bindings",
+    "bleno-mac": "github:notjosh/bleno-mac",
+    "uiohook-napi": "^1.5.5",
+    "xpc-connection": "github:sandeepmistry/node-xpc-connection#pull/26/head"
+  }
+}

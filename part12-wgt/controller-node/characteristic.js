@@ -1,52 +1,101 @@
-var util = require('util');
+import bleno from 'bleno-mac';
+import { uIOhook } from 'uiohook-napi';
 
-var bleno = require('bleno-mac');
+const BlenoCharacteristic = bleno.Characteristic;
 
-var BlenoCharacteristic = bleno.Characteristic;
+class EchoCharacteristic extends BlenoCharacteristic {
+  constructor() {
+    super({
+      uuid: 'ec0e',
+      properties: ['read', 'write', 'notify'],
+      value: null
+    });
 
-var EchoCharacteristic = function() {
-  EchoCharacteristic.super_.call(this, {
-    uuid: 'ec0e',
-    properties: ['read', 'write', 'notify'],
-    value: null
-  });
+    this._value = Buffer.alloc(0);
+    this._updateValueCallback = null;
 
-  this._value = new Buffer(0);
-  this._updateValueCallback = null;
-};
+    // Allocate tracking buffers internally
+    this.buf = Buffer.allocUnsafe(4);
+    this.obuf = Buffer.allocUnsafe(4);
+    this.buttbuf = Buffer.allocUnsafe(2);
 
-util.inherits(EchoCharacteristic, BlenoCharacteristic);
+    // Screen layout matching properties - scale down to wgt's 320x200 screen
+    this.scrwidth = 1440;
+    this.scrheight = 900;
+    this.divisorx = this.scrwidth / 320;
+    this.divisory = this.scrheight / 200;
 
-EchoCharacteristic.prototype.onReadRequest = function(offset, callback) {
-  console.log('EchoCharacteristic - onReadRequest: value = ' + this._value.toString('hex'));
-
-  callback(this.RESULT_SUCCESS, this._value);
-};
-
-EchoCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
-  this._value = data;
-
-  console.log('EchoCharacteristic - onWriteRequest: value = ' + this._value.toString('hex'));
-
-  if (this._updateValueCallback) {
-    console.log('EchoCharacteristic - onWriteRequest: notifying');
-
-    this._updateValueCallback(this._value);
+    // Start listening for mouse events natively inside the class
+    this._setupMouseHooks();
   }
 
-  callback(this.RESULT_SUCCESS);
-};
+  _setupMouseHooks() {
+    uIOhook.on('mousemove', event => {
+       this.buf.writeUInt16LE(Math.round(event.x / this.divisorx), 0);
+       this.buf.writeUInt16LE(Math.round(event.y / this.divisory), 2);
 
-EchoCharacteristic.prototype.onSubscribe = function(maxValueSize, updateValueCallback) {
-  console.log('EchoCharacteristic - onSubscribe');
+       if (Buffer.compare(this.buf, this.obuf)) {
+          this._value = this.buf;
 
-  this._updateValueCallback = updateValueCallback;
-};
+          if (this._updateValueCallback) {
+             this._updateValueCallback(this._value);
+          }
+          this.buf.copy(this.obuf);
+       }
+    });
 
-EchoCharacteristic.prototype.onUnsubscribe = function() {
-  console.log('EchoCharacteristic - onUnsubscribe');
+    uIOhook.on('mousedown', event => {
+       this.buttbuf.writeUInt8(1, 0);
+       this.buttbuf.writeUInt8(event.button, 1);
 
-  this._updateValueCallback = null;
-};
+       this._value = this.buttbuf;
 
-module.exports = EchoCharacteristic;
+       if (this._updateValueCallback) {
+          this._updateValueCallback(this._value);
+       }
+    });
+
+    uIOhook.on('mouseup', event => {
+       this.buttbuf.writeUInt8(2, 0);
+       this.buttbuf.writeUInt8(event.button, 1);
+
+       this._value = this.buttbuf;
+
+       if (this._updateValueCallback) {
+          this._updateValueCallback(this._value);
+       }
+    });
+
+    uIOhook.start();
+  }
+
+  onReadRequest(offset, callback) {
+    console.log('EchoCharacteristic - onReadRequest: value = ' + this._value.toString('hex'));
+    // Using bleno.Characteristic explicitly avoiding proto issues
+    callback(bleno.Characteristic.RESULT_SUCCESS, this._value);
+  }
+
+  onWriteRequest(data, offset, withoutResponse, callback) {
+    this._value = data;
+    console.log('EchoCharacteristic - onWriteRequest: value = ' + this._value.toString('hex'));
+
+    if (this._updateValueCallback) {
+      console.log('EchoCharacteristic - onWriteRequest: notifying');
+      this._updateValueCallback(this._value);
+    }
+
+    callback(bleno.Characteristic.RESULT_SUCCESS);
+  }
+
+  onSubscribe(maxValueSize, updateValueCallback) {
+    console.log('EchoCharacteristic - onSubscribe: Central device has connected!');
+    this._updateValueCallback = updateValueCallback;
+  }
+
+  onUnsubscribe() {
+    console.log('EchoCharacteristic - onUnsubscribe');
+    this._updateValueCallback = null;
+  }
+}
+
+export default EchoCharacteristic;

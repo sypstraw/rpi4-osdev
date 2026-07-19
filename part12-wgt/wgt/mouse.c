@@ -183,8 +183,6 @@ void send_spec_compliant_error(unsigned int conn_handle, unsigned char offending
     for (int i = 0; i < 14; i++) {
         bt_writeByte(reply[i]);
     }
-    
-    debugstr("spec-compliant error sent!");
 }
 
 void acl_poll()
@@ -220,16 +218,16 @@ void acl_poll()
 
              if (thandle == connection_handle && channel == 4) {
                 if (opcode == 0x10) {
-                   debugcrlf();
-                   debugstr("Got Mac service discovery... ");
-
 		   wait_msec(10);
 		   send_spec_compliant_error(thandle, 0x10, target_handle);
 #ifdef IOS_CONTROL
-                } else if (opcode == 0x1b && length == 4 && data[5] == 0x3b && data[6] == 0x00) {
+                } else if (opcode == 0x1b && data[5] == 0x3b && data[6] == 0x00) {
 #else
-                } else if (opcode == 0x1b && length == 4 && data[5] == 0x1b && data[6] == 0x00) {
+                } else if (opcode == 0x1b && data[5] == 0x1b && data[6] == 0x00) {
 #endif
+                   // Unlike breakout's 1-byte paddle messages (length 4), our
+                   // controller sends 4-byte moves (length 7) and 2-byte
+                   // button events (length 5), so we sort by length here
                    if (length == 7) msetxy(data[7] | (data[8] << 8), data[9] | (data[10] << 8));
                    if (length == 5) msetbut(data[7], data[8]);
                 }
